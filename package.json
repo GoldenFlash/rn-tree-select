@@ -1,0 +1,24 @@
+{
+  "name": "rn-tree-select",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoldenFlash/rn-tree-select.git"
+  },
+  "keywords": [
+    "react-native",
+    "rn",
+    "rn-tree-select"
+  ],
+  "author": "wangwei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GoldenFlash/rn-tree-select/issues"
+  },
+  "homepage": "https://github.com/GoldenFlash/rn-tree-select#readme"
+}
