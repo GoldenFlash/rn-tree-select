@@ -8,10 +8,29 @@ export default class Rntree extends Component {
             treeData: this.initTreeData(props.data)
         }
     }
+    componentDidMount(){
+        console.log("lsit",this.state.list)
+    }
+    onChange=(treeData)=>{
+        let data = JSON.parse(JSON.stringify(treeData))
+        let keys = Object.keys(treeData)
+        let output = []
+        keys.filter((key)=>{
+            let item = data[key]
+            if (item.checked){
+                delete item.children
+                delete item.isRoot
+                delete item.expend
+                delete item.checked
+                delete item.hasChildrenChecked
+                output.push(item)
+            }
+        })
+        console.log("output",output)
+        this.props.onChange && this.props.onChange(output)
+    }
     initTreeData = (data) => {
-        // let root = []
         let tree = {}
-
         data.forEach((item) => {
             let id = item.id && item.id.toString()
             let parentId = item.parentId && item.parentId.toString()
@@ -48,34 +67,34 @@ export default class Rntree extends Component {
     toggleFold = (node) => {
         let treeData = this.state.treeData
         let nodeId = node.id
-        if(!nodeId) return
+        if (!nodeId) return
         treeData[nodeId].expend = !node.expend
-        console.log("node", node)
         this.setState({
             treeData
         })
     }
-    toggleCheck=(node)=>{
+    toggleCheck = (node) => {
         let treeData = this.state.treeData
-        let nodeId = node.id 
+        let nodeId = node.id
+        let parentId = node.parentId
         if (!nodeId) return
         treeData[nodeId].checked = !node.checked
         treeData[nodeId].hasChildrenChecked = false
-        if (node.children) {
+        if (node.children && node.children.length) {
             this.checkSub(treeData, node)
         }
-        if (node.parentId){
+        if (parentId && treeData[parentId]) {
             this.checkParent(treeData, node)
         }
-       
+        this.onChange(treeData)
         this.setState({
             treeData
         })
     }
-    checkParent=(treeData,node)=>{
+    checkParent = (treeData, node) => {
         let parentId = node.parentId
         let parentNode = treeData[parentId]
-        if (parentNode.children && parentNode.children.length){
+        if (parentNode.children && parentNode.children.length) {
             let parentChecked = parentNode.children.every((item) => {
                 return item.checked
             })
@@ -85,104 +104,104 @@ export default class Rntree extends Component {
             parentNode.hasChildrenChecked = hasChildrenChecked
             parentNode.checked = parentChecked
         }
-        if (parentNode.parentId){
-            this.checkParent(treeData,parentNode)
+        if (parentNode.parentId) {
+            this.checkParent(treeData, parentNode)
         }
     }
-    checkSub=(treeData,node)=>{
+    checkSub = (treeData, node) => {
         let nodeId = node.id
         let checked = node.checked
         let children = treeData[nodeId].children
-        children.forEach((item)=>{
+        children.forEach((item) => {
             item.checked = checked
-            if (item.children&&item.children.length){
+            if (item.children && item.children.length) {
                 this.checkSub(treeData, item)
             }
         })
+        
+    }
+    _renderItem=({ item })=> {
+        return (
+            <View>
+                <View style={styles.items}>
+                    {
+                        item.children && item.children.length > 0 ?
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.toggleFold(item)
+                                }}
+                            >
+                                <Image
+                                    resizeMode="contain"
+                                    style={styles.image}
+                                    source={
+                                        item.expend ?
+                                            require("../icon/arrow-down-b.png") :
+                                            require("../icon/arrow-right-b.png")}
+                                ></Image>
+                            </TouchableOpacity>
+                            : null
+                    }
+                    <TouchableOpacity
+                        style={item.children ? null : { marginLeft: 20 }}
+                        onPress={() => {
+                            this.toggleCheck(item)
+                        }}>
+                        <Image
+                            style={styles.image}
+                            resizeMode="contain"
+                            source={
+                                item.checked ?
+                                    require("../icon/checkbox-marked.png") :
+                                    item.hasChildrenChecked ?
+                                        require("../icon/checkbox-indeterminate-fill.png") :
+                                        require("../icon/check_box_outline_blank.png")
+                            }
+                        ></Image>
+                    </TouchableOpacity>
+                    <Text>{item.name}</Text>
+                </View>
+                {
+                    item.expend && item.children && item.children.length > 0 ?
+                        this._renderBranch(item.children)
+                        : null
+                }
+            </View>
+        )
+
+    }
+    _renderBranch(data) {
+        console.log("data", data)
+        return (
+            <View style={styles.branch_wrapper}>
+                <FlatList
+                    data={data}
+                    extraData={this.state}
+                    keyExtractor={(item, index) => ""+item.id+index}
+                    renderItem={this._renderItem}
+                />
+            </View>
+        )
+
+
     }
     render() {
         let treeData = this.state.treeData
-        // treeData[1110].a = 1
         let key = Object.keys(treeData)
-        console.log("key", key)
         let root = []
         key.forEach(item => {
             if (treeData[item].isRoot) {
                 root.push(treeData[item])
             }
         })
-        console.log("root", root)
 
         let { style } = this.props
         return (
             <View style={style}>
-                <Branch
-                    data={root}
-                    toggleFold={this.toggleFold}
-                    toggleCheck={this.toggleCheck}
-                ></Branch>
+                {this._renderBranch(root)}
             </View>
         )
     }
-}
-
-function Branch(props) {
-    let data = props.data || []
-    console.log("data", data)
-    return (
-        <View style={styles.branch_wrapper}>
-            {
-                data.map((item, index) => {
-                    return (
-                        <View key={index}>
-                            <View style={styles.items}>
-                                {
-                                    item.children && item.children.length > 0 ?
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                props.toggleFold(item)
-                                            }}
-                                        >
-                                            <Image
-                                                resizeMode="contain"
-                                                style={styles.image}
-                                                source={
-                                                    item.expend ?
-                                                        require("../icon/arrow-down-b.png") :
-                                                        require("../icon/arrow-right-b.png")}
-                                            ></Image>
-                                        </TouchableOpacity>
-                                        : null
-                                }
-                                <TouchableOpacity  
-                                    style={item.children ? null : { marginLeft: 20 }}
-                                    onPress={()=>{
-                                    props.toggleCheck(item)
-                                }}>
-                                    <Image
-                                        style={styles.image}
-                                        resizeMethod="contain"
-                                        source={
-                                            item.checked?
-                                            require("../icon/checkbox-marked.png"):
-                                            item.hasChildrenChecked?
-                                            require("../icon/checkbox-indeterminate-fill.png"):
-                                            require("../icon/check_box_outline_blank.png")
-                                        }
-                                    ></Image>
-                                </TouchableOpacity>
-                                <Text>{item.name}</Text>
-                            </View>
-                            {
-                                item.expend && item.children && item.children.length > 0 ?
-                                    <Branch {...props} data={item.children}></Branch> : null
-                            }
-                        </View>
-                    )
-                })
-            }
-        </View>
-    )
 }
 
 const styles = StyleSheet.create({
