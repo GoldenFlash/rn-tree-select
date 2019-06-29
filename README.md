@@ -100,4 +100,8 @@ $ npm install native-echarts --save 或 $ yarn add rn-tree-select
  可获取选中项组成的数组
   ```
     let valueArr = this.refs.treeSelect.getCheckedValue(）
+<<<<<<< HEAD
    ```
+=======
+   ```
+>>>>>>> 993fce4db957b655240e63abe62f2f498d0f12aa
