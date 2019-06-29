@@ -4,7 +4,7 @@
 
 ## install
     ```
-        $ npm install native-echarts --save 或 $ yarn add rn-tree-select 
+    $ npm install native-echarts --save 或 $ yarn add rn-tree-select 
     ```
 ## Usage
   ```
@@ -99,6 +99,6 @@
 
 ## methods
  - getCheckedValue 可获取选中项组成的数组
-    ````
+    ```
         let valueArr = this.refs.treeSelect.getCheckedValue(）
     ```
