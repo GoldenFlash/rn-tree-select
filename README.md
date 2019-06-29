@@ -4,7 +4,7 @@
 
 ## install
 
-    $ npm install native-echarts --save 或 $ yarn add rn-tree-select 
+    $ npm install rn-tree-select  --save 或 $ yarn add rn-tree-select 
     
     
 ## Usage
