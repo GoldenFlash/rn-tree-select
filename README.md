@@ -3,9 +3,10 @@
 ![The final rendering](./rn-tree-select.png)
 
 ## install
-    ```
+
     $ npm install native-echarts --save 或 $ yarn add rn-tree-select 
-    ```
+    
+    
 ## Usage
   ```
   import React, {Component} from 'react';
@@ -82,7 +83,7 @@
 - 通过ref获取
 
   ```
-    let valueArr = this.refs.treeSelect.getCheckedValue()
+  let valueArr = this.refs.treeSelect.getCheckedValue()
   ```
 
 
@@ -100,5 +101,5 @@
 ## methods
  - getCheckedValue 可获取选中项组成的数组
     ```
-        let valueArr = this.refs.treeSelect.getCheckedValue(）
+    let valueArr = this.refs.treeSelect.getCheckedValue(）
     ```
