@@ -160,7 +160,7 @@ export default class Rntree extends Component {
                             }
                         ></Image>
                     </TouchableOpacity>
-                    <Text style={props.textStyle}>{item.name}</Text>
+                    <Text style={this.props.textStyle}>{item.name}</Text>
                 </View>
                 {
                     item.expend && item.children && item.children.length > 0 ?
