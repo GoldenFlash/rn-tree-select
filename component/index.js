@@ -38,7 +38,7 @@ export default class Rntree extends Component {
             let id = item.id && item.id.toString()
             let parentId = item.parentId && item.parentId.toString()
 
-            item.expend = false
+            item.expend = this.props.expand_all || false
             item.checked = false
 
             if (parentId) {
