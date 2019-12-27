@@ -56,7 +56,7 @@
 + 选项列表
   ```
   let data = [
-      { "id": 1000, "name": 1000 },
+      { "id": 1000, "name": 1000,expend:true //默认展开,checked:true //默认选中 },
       { "id": 1100, "name": 1100, "parentId": 1000 },
       { "id": 1110, "name": 1110, "parentId": 1100 },
       { "id": 1120, "name": 1120, "parentId": 1100 },
