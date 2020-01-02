@@ -8,15 +8,14 @@ export default class Rntree extends Component {
             treeData: this.initTreeData(JSON.parse(JSON.stringify(props.data)))
         }
     }
-    componentDidMount(){
-        // console.log("lsit",this.state.list)
-    }
-    onChange=(treeData)=>{
+   
+    onChange=()=>{
         if (this.props.onChange){
             let output = this.getCheckedValue()
             this.props.onChange(output)
         }
     }
+
     getCheckedValue = ()=>{
         let treeData = this.state.treeData
         let data = JSON.parse(JSON.stringify(treeData))
@@ -66,9 +65,7 @@ export default class Rntree extends Component {
             }
 
         })
-        // console.log("treeData", tree)
         return tree
-
     }
     toggleFold = (node) => {
         let treeData = this.state.treeData
@@ -97,6 +94,7 @@ export default class Rntree extends Component {
             treeData
         })
     }
+
     checkParent = (treeData, node) => {
         let parentId = node.parentId
         let parentNode = treeData[parentId]
@@ -114,6 +112,7 @@ export default class Rntree extends Component {
             this.checkParent(treeData, parentNode)
         }
     }
+
     checkSub = (treeData, node) => {
         let nodeId = node.id
         let checked = node.checked
@@ -124,8 +123,8 @@ export default class Rntree extends Component {
                 this.checkSub(treeData, item)
             }
         })
-        
     }
+
     _renderItem=({ item })=> {
         return (
             <View>
@@ -174,7 +173,6 @@ export default class Rntree extends Component {
                 }
             </View>
         )
-
     }
     
     _renderBranch(data) {
@@ -182,7 +180,7 @@ export default class Rntree extends Component {
             <View style={styles.branch_wrapper}>
                 <FlatList
                     data={data}
-                    removeClippedSubviews={true}
+                    // removeClippedSubviews={true}
                     initialNumToRender={20}
                     extraData={this.state}
                     keyExtractor={(item, index) => ""+item.id+index}
